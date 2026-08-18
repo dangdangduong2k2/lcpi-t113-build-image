@@ -1,0 +1,9 @@
+LCPI-PC-T113 Buildroot bring-up
+
+UART:  ttyS3, 115200 8N1 (PB6 TX / PB7 RX, 3.3 V)
+LCD:   provisional RGB666 800x480 timing from the vendor Tina image
+
+LCD checks:
+  dmesg | grep -Ei 'drm|panel|tcon|framebuffer'
+  fbset
+  fb-test

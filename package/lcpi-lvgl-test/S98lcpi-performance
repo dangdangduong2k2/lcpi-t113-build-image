@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# This image is deliberately tuned for visual responsiveness. Boards without
+# cpufreq simply have no matching files, so this is a harmless no-op there.
+case "$1" in
+	start)
+		for governor in /sys/devices/system/cpu/cpufreq/policy*/scaling_governor; do
+			[ -w "$governor" ] && echo performance > "$governor"
+		done
+		;;
+esac

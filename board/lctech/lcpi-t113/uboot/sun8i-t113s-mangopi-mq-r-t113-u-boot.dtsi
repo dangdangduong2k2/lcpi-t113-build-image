@@ -1,0 +1,40 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+
+/* Preserve the standard sunxi binman image layout and boot properties. */
+#include "sunxi-u-boot.dtsi"
+
+/ {
+	aliases {
+		serial3 = &uart3;
+	};
+
+	chosen {
+		stdout-path = "serial3:115200n8";
+	};
+};
+
+/* LCPI uses a fixed 0.9 V core rail rather than MangoPi's 0.88 V value. */
+&reg_vcc_core {
+	regulator-min-microvolt = <900000>;
+	regulator-max-microvolt = <900000>;
+};
+
+&pio {
+	/* LCPI straps PE to AVDD2V8 through R47; R49 to 3.3 V is DNP. */
+	vcc-pb-supply = <&reg_3v3>;
+	vcc-pc-supply = <&reg_3v3>;
+	vcc-pd-supply = <&reg_3v3>;
+	vcc-pe-supply = <&reg_avdd2v8>;
+	vcc-pf-supply = <&reg_3v3>;
+	vcc-pg-supply = <&reg_3v3>;
+};
+
+&uart0 {
+	status = "disabled";
+};
+
+&uart3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart3_pb_pins>;
+	status = "okay";
+};

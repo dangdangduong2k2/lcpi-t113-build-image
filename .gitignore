@@ -1,0 +1,8 @@
+.vscode/
+.idea/
+/lcpi-lvgl-ui-lab/
+output/
+dl/
+*.img
+*.7z
+*.zip

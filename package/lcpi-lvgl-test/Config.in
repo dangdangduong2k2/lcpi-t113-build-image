@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LCPI_LVGL_TEST
+	bool "LCPI LCD and GT911 LVGL self-test"
+	select BR2_PACKAGE_LVGL
+	help
+	  Automatically starts a framebuffer display and Goodix GT911 touch
+	  diagnostic on boot. No serial console or interactive command is needed.

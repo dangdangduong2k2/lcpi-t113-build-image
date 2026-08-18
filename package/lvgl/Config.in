@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LVGL
+	bool "LVGL graphics library"
+	help
+	  LVGL 9.x built for the LCPI framebuffer and evdev test application.
+	  This external package is intentionally built as C-only, avoiding a
+	  C++ toolchain dependency for the bring-up image.

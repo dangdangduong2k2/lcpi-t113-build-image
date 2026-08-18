@@ -1,0 +1,44 @@
+#!/bin/sh
+
+DAEMON=/usr/bin/lcpi-lvgl-test
+PIDFILE=/run/lcpi-lvgl-test.pid
+LOGFILE=/run/lcpi-lvgl-test.log
+
+case "$1" in
+	start)
+		if [ -r "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
+			exit 0
+		fi
+		# A raw framebuffer sequence is a no-UART boot witness. It runs before
+		# LVGL and therefore isolates panel/DRM-fbdev output from LVGL itself.
+		if [ -x /usr/bin/fb-test ]; then
+			tries=0
+			while [ ! -c /dev/fb0 ] && [ "$tries" -lt 30 ]; do
+				sleep 1
+				tries=$((tries + 1))
+			done
+			if [ -c /dev/fb0 ]; then
+				/usr/bin/fb-test -f 0 -r
+				sleep 1
+				/usr/bin/fb-test -f 0 -g
+				sleep 1
+				/usr/bin/fb-test -f 0 -b
+				sleep 1
+				/usr/bin/fb-test -f 0 -w
+				sleep 1
+				/usr/bin/fb-test -f 0 -p 0
+				sleep 2
+			fi
+		fi
+		start-stop-daemon -S -b -m -p "$PIDFILE" -x "$DAEMON" \
+			>>"$LOGFILE" 2>&1
+		;;
+	stop)
+		start-stop-daemon -K -p "$PIDFILE" 2>/dev/null || true
+		rm -f "$PIDFILE"
+		;;
+	restart)
+		"$0" stop
+		"$0" start
+		;;
+esac

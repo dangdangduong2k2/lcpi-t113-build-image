@@ -1,0 +1,6 @@
+menu "LCPI packages"
+
+source "$BR2_EXTERNAL_LCPI_T113_PATH/package/lvgl/Config.in"
+source "$BR2_EXTERNAL_LCPI_T113_PATH/package/lcpi-lvgl-test/Config.in"
+
+endmenu
